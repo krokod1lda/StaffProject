@@ -1,6 +1,17 @@
 .forBackground {
     min-height: 800px;
 }
+
+.forButtons {
+    font-size: medium;
+    font-family: Helvetica, sans-serif;
+    border: 1px solid #ced4da;
+    color: #818181;
+
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+}
+
 .sidenav {
     height: 100%;
     width: 0;

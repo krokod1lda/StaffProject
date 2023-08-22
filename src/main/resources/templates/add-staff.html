@@ -14,11 +14,16 @@
 <!-- Шапка страницы -->
 <div th:insert="/blocks/sidebar :: sidebar"></div>
 
-<div>
-    <h1>Главная страница</h1>
-    <div th:each="el : ${staffs}">
-        <h3 th:text="${el.name} + ${el.patronymic} + ${el.surname}"></h3>
-    </div>
+<div class="container mt-3">
+    <h1>Добавление сотрудника</h1>
+    <form action="/addStaff" method="post">
+        <input type="text" name="name" class="form-control mt-2" placeholder="Введите имя" maxlength="20">
+        <input type="text" name="surname" class="form-control mt-2" placeholder="Введите фамилию" maxlength="20">
+        <input type="text" name="patronymic" class="form-control mt-2" placeholder="Введите отчество" maxlength="20">
+
+        <hr>
+        <button type="submit" class="btn btn-light forButtons">Добавить сотрудника</button>
+    </form>
 </div>
 
 <!-- Футер страницы -->
