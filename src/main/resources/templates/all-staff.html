@@ -15,7 +15,14 @@
 <div th:insert="/blocks/sidebar :: sidebar"></div>
 
 <div class="container mt-3 forAll">
-    <h1>Главная страница</h1>
+    <h1>Все сотрудники</h1>
+
+    <ul class="dropdown-menu position-static d-grid gap-1 rounded-3 mx-0 shadow" data-bs-theme="light">
+        <div th:each="el : ${staffs}">
+            <a class="dropdown-item rounded-2" th:staffHref="'staff' + ${el.id}" style="cursor: pointer" th:text="${el.name} + ${el.patronymic} + ${el.surname}"></a>
+            <hr class="dropdown-divider">
+        </div>
+    </ul>
 </div>
 
 <!-- Футер страницы -->
@@ -31,6 +38,17 @@
     function closeNav() {
         document.getElementById("mySidenav").style.width = "0";
     }
+</script>
+
+<script>
+    const tableRows = document.querySelectorAll('a[staffHref]');
+
+    tableRows.forEach(row => {
+        row.addEventListener('click', () => {
+            const url = row.getAttribute('staffHref');
+            window.location.href = url;
+        });
+    });
 </script>
 
 </html>

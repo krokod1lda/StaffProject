@@ -15,7 +15,12 @@
 <div th:insert="/blocks/sidebar :: sidebar"></div>
 
 <div class="container mt-3 forAll">
-    <h1>Главная страница</h1>
+    <h1>сотрудник</h1>
+    <div th:each="el : ${staff}">
+        <form th:action="'/staff' + ${el.id} + '/remove'" method="post">
+            <button class="w-100 btn btn-light forButtons" type="submit" >Удалить</button>
+        </form>
+    </div>
 </div>
 
 <!-- Футер страницы -->

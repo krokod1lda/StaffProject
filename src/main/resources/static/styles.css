@@ -12,6 +12,10 @@
     transition-duration: 0.4s;
 }
 
+.forAll {
+    min-height: 600px;
+}
+
 .sidenav {
     height: 100%;
     width: 0;

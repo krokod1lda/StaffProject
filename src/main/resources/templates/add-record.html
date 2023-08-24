@@ -14,8 +14,17 @@
 <!-- Шапка страницы -->
 <div th:insert="/blocks/sidebar :: sidebar"></div>
 
-<div>
+<div class="container mt-3 forAll">
     <h1>Добавление записи</h1>
+    <div class="col-sm-6">
+        <label for="selectId" class="form-label">Сотрудник</label>
+        <select name="staffSelect" class="form-control" id="selectId">
+            <div th:each="el : ${staffs}">
+                <option th:value="${el.id}" th:text="${el.name}"></option>
+            </div>
+        </select>
+    </div>
+
 </div>
 
 <!-- Футер страницы -->

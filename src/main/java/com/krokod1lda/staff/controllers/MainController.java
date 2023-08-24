@@ -15,10 +15,6 @@ public class MainController {
 
     @GetMapping("/")
     public String home(Model model) {
-
-        Iterable<Staff> staffs = staffRepository.findAll();
-        model.addAttribute("staffs", staffs); // Передаем все записи в шаблон
-
         model.addAttribute("title", "Главная страница");
         return "home";
     }
