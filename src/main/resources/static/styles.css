@@ -16,6 +16,12 @@
     min-height: 600px;
 }
 
+.forRecordLines{
+    display: flex;
+    flex-direction: row;
+    padding: 0.8%;
+}
+
 .sidenav {
     height: 100%;
     width: 0;

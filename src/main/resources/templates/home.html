@@ -16,6 +16,18 @@
 
 <div class="container mt-3 forAll">
     <h1>Главная страница</h1>
+
+    <ul class="dropdown-menu position-static d-grid gap-1 rounded-3 mx-0 shadow" data-bs-theme="light">
+        <div th:each="el : ${records}">
+            <div class="forRecordLines">
+                <a class="dropdown-item rounded-2" th:text="${el.staffId} + ' ' + ${el.date} + ' ' + ${el.workingRate}"></a>
+                <form th:action="'/record' + ${el.id} + '/remove'" method="post">
+                    <button class="btn btn-light forButtons" type="submit" >Удалить</button>
+                </form>
+            </div>
+            <hr class="dropdown-divider">
+        </div>
+    </ul>
 </div>
 
 <!-- Футер страницы -->

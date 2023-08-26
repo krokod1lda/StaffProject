@@ -16,13 +16,42 @@
 
 <div class="container mt-3 forAll">
     <h1>Добавление записи</h1>
-    <div class="col-sm-6">
-        <label for="selectId" class="form-label">Сотрудник</label>
-        <select name="staffSelect" class="form-control" id="selectId">
-            <div th:each="el : ${staffs}">
-                <option th:value="${el.id}" th:text="${el.name}"></option>
+    <div>
+        <form action="/addRecord" method="post">
+
+            <div class="col-sm-6">
+                <label for="staffId" class="form-label">Выберите сотрудника</label>
+                <select required name="staffId" class="form-control" id="staffId">
+                    <option value="">Не выбран</option>
+                    <div th:each="el : ${staffs}">
+                        <option th:value="${el.id}" th:text="${el.name} + ' ' + ${el.patronymic}"></option>
+                    </div>
+                </select>
             </div>
-        </select>
+
+            <div class="col-sm-6">
+                <label for="dateId" class="form-label">Введите дату</label>
+                <input required type="date" name="date" class="form-control" id="dateId">
+            </div>
+
+            <div class="col-sm-6">
+                <label for="startHoursId" class="form-label">Введите часы начала работы</label>
+                <input required type="time" name="startHours" class="form-control" id="startHoursId">
+            </div>
+
+            <div class="col-sm-6">
+                <label for="endHoursId" class="form-label">Введите часы окончания работы</label>
+                <input required type="time" name="endHours" class="form-control" id="endHoursId">
+            </div>
+
+            <div class="col-sm-6">
+                <label for="workingRateId" class="form-label">Введите ставку (руб/ч)</label>
+                <input required type="number" name="workingRate" class="form-control" id="workingRateId">
+            </div>
+
+            <hr>
+            <button type="submit" class="btn btn-light forButtons">Добавить запись</button>
+        </form>
     </div>
 
 </div>

@@ -15,10 +15,38 @@
 <div th:insert="/blocks/sidebar :: sidebar"></div>
 
 <div class="container mt-3 forAll">
-    <h1>сотрудник</h1>
     <div th:each="el : ${staff}">
+        <h2 th:text="${el.surname} + ' ' + ${el.name} + ' ' + ${el.patronymic}"></h2>
+
+        <hr class="my-4">
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Дата</th>
+                <th scope="col">Время начала работы</th>
+                <th scope="col">Время окончания работы</th>
+                <th scope="col">Часы</th>
+                <th scope="col">Ставка</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="el2 : ${recordsAndTime}">
+
+                <td th:text="${el2.getKey().date}"></td>
+                <td th:text="${el2.getKey().startHours}"></td>
+                <td th:text="${el2.getKey().endHours}"></td>
+                <td th:text="${el2.getValue()}"></td>
+                <td th:text="${el2.getKey().workingRate}"></td>
+
+            </tr>
+            </tbody>
+        </table>
+
+
+
         <form th:action="'/staff' + ${el.id} + '/remove'" method="post">
-            <button class="w-100 btn btn-light forButtons" type="submit" >Удалить</button>
+            <button class="w-100 btn btn-light forButtons" type="submit" >Удалить клиента</button>
         </form>
     </div>
 </div>

@@ -19,7 +19,7 @@
 
     <ul class="dropdown-menu position-static d-grid gap-1 rounded-3 mx-0 shadow" data-bs-theme="light">
         <div th:each="el : ${staffs}">
-            <a class="dropdown-item rounded-2" th:staffHref="'staff' + ${el.id}" style="cursor: pointer" th:text="${el.name} + ${el.patronymic} + ${el.surname}"></a>
+            <a class="dropdown-item rounded-2" th:staffHref="'staff' + ${el.id}" style="cursor: pointer" th:text="${el.name} + ' ' + ${el.patronymic} + ' ' + ${el.surname}"></a>
             <hr class="dropdown-divider">
         </div>
     </ul>

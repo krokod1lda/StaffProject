@@ -14,19 +14,20 @@ public class Record {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String staffId;
+    private Long staffId;
     private Date date; // MySQL извлекает и выводит величины DATE в формате 'YYYY-MM-DD'
-    private Time startHours; // По умолчанию для хранения времени применяется формат "hh:mm:ss". Занимает 3 байта.
-    private Time endHours;
+    private String startHours; // По умолчанию для хранения времени применяется формат "hh:mm:ss". Занимает 3 байта.
+    private String endHours;
     private double workingRate;
 
-    public Record(String staffId, Date date, Time startHours, Time endHours, double workingRate) {
+    public Record(Long staffId, Date date, String startHours, String endHours, double workingRate) {
         this.staffId = staffId;
         this.date = date;
         this.startHours = startHours;
         this.endHours = endHours;
         this.workingRate = workingRate;
     }
+
     public Record() {}
 
     public Long getId() {
@@ -37,11 +38,11 @@ public class Record {
         this.id = id;
     }
 
-    public String getStaffId() {
+    public Long getStaffId() {
         return staffId;
     }
 
-    public void setStaffId(String staffId) {
+    public void setStaffId(Long staffId) {
         this.staffId = staffId;
     }
 
@@ -53,19 +54,19 @@ public class Record {
         this.date = date;
     }
 
-    public Time getStartHours() {
+    public String getStartHours() {
         return startHours;
     }
 
-    public void setStartHours(Time startHours) {
+    public void setStartHours(String startHours) {
         this.startHours = startHours;
     }
 
-    public Time getEndHours() {
+    public String getEndHours() {
         return endHours;
     }
 
-    public void setEndHours(Time endHours) {
+    public void setEndHours(String endHours) {
         this.endHours = endHours;
     }
 
