@@ -16,18 +16,32 @@
 
 <div class="container mt-3 forAll">
     <h1>Главная страница</h1>
+    <hr class="my-4">
+    <div th:each="i : ${recordsByDatesList}">
+        <h4 th:text="${i[0].date}"></h4>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Сотрудник</th>
+                <th scope="col">Время начала работы</th>
+                <th scope="col">Время окончания работы</th>
+                <th scope="col">Часы</th>
+                <th scope="col">Ставка</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="j : ${i}">
 
-    <ul class="dropdown-menu position-static d-grid gap-1 rounded-3 mx-0 shadow" data-bs-theme="light">
-        <div th:each="el : ${records}">
-            <div class="forRecordLines">
-                <a class="dropdown-item rounded-2" th:text="${el.staffId} + ' ' + ${el.date} + ' ' + ${el.workingRate}"></a>
-                <form th:action="'/record' + ${el.id} + '/remove'" method="post">
-                    <button class="btn btn-light forButtons" type="submit" >Удалить</button>
-                </form>
-            </div>
-            <hr class="dropdown-divider">
-        </div>
-    </ul>
+                <td th:text="${staffById.get(j.staffId).surname + ' ' + staffById.get(j.staffId).name + ' ' + staffById.get(j.staffId).patronymic}"></td>
+                <td th:text="${j.startHours}"></td>
+                <td th:text="${j.endHours}"></td>
+                <td>Пока что нет</td>
+                <td th:text="${j.workingRate}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <hr class="my-4">
+    </div>
 </div>
 
 <!-- Футер страницы -->

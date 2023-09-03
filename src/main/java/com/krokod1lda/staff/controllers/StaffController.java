@@ -82,14 +82,6 @@ public class StaffController {
         return "staff-card";
     }
 
-    private float StrToFlGetTime(String time1, String time2) { // функция возвращает количество часов
-
-        float h1 = Float.parseFloat(time1.substring(0, 2)), h2 = Float.parseFloat(time2.substring(0, 2)); // сразу привели часы к float
-        float m1 = Float.parseFloat(time1.substring(3)), m2 = Float.parseFloat(time2.substring(3));
-
-        return ((h2 * 60 + m2) - (h1 * 60 + m1)) / 60;
-    }
-
     @PostMapping("/staff{id}/remove")
     public String staffDelete(@PathVariable(value = "id") long id) {
 
@@ -100,5 +92,12 @@ public class StaffController {
         recordRepository.deleteAll(records);
 
         return "redirect:/";
+    }
+    private float StrToFlGetTime(String time1, String time2) { // функция возвращает количество часов
+
+        float h1 = Float.parseFloat(time1.substring(0, 2)), h2 = Float.parseFloat(time2.substring(0, 2)); // сразу привели часы к float
+        float m1 = Float.parseFloat(time1.substring(3)), m2 = Float.parseFloat(time2.substring(3));
+
+        return ((h2 * 60 + m2) - (h1 * 60 + m1)) / 60;
     }
 }

@@ -34,10 +34,10 @@ public class RecordController {
 
     @PostMapping("/addRecord")
     public String newRecord(@RequestParam Long staffId,
-                            @RequestParam Date date, @RequestParam String startHours,
+                            @RequestParam String date, @RequestParam String startHours,
                             @RequestParam String endHours, @RequestParam double workingRate) {
 
-        Record record = new Record(staffId, date, startHours, endHours, workingRate);
+        Record record = new Record(staffId, parseDate(date), startHours, endHours, workingRate);
         recordRepository.save(record);
 
         return "redirect:/";
@@ -50,5 +50,13 @@ public class RecordController {
         recordRepository.delete(record);
 
         return "redirect:/";
+    }
+    private String parseDate(String str) {
+
+        String year = str.substring(0, 4);
+        String month = str.substring(5, 7);
+        String day = str.substring(8);
+
+        return day + "." + month + "." + year;
     }
 }
