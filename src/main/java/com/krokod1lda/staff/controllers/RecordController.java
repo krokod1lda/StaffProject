@@ -1,9 +1,9 @@
 package com.krokod1lda.staff.controllers;
 
-import com.krokod1lda.staff.models.Record;
-import com.krokod1lda.staff.models.Staff;
-import com.krokod1lda.staff.repo.RecordRepository;
-import com.krokod1lda.staff.repo.StaffRepository;
+import com.krokod1lda.staff.entityAttributes.RecordAttributes;
+import com.krokod1lda.staff.entityAttributes.StaffAttributes;
+import com.krokod1lda.staff.services.RecordService;
+import com.krokod1lda.staff.services.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,33 +12,29 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.sql.Date;
-
 @Controller
 public class RecordController {
 
     @Autowired
-    private StaffRepository staffRepository;
+    private StaffService staffService;
     @Autowired
-    private RecordRepository recordRepository;
+    private RecordService recordService;
 
     @GetMapping("/addRecord")
     public String addRecord(Model model) {
 
-        Iterable<Staff> staffs = staffRepository.findAll();
-        model.addAttribute("staffs", staffs); // Передаем данные всех сотрудников в шаблон
+        model.addAttribute(StaffAttributes.STAFFS.getValue(), staffService.getAllStaff()); // Передаем данные всех сотрудников в шаблон
+        model.addAttribute(StaffAttributes.TITLE.getValue(), RecordAttributes.ADDIND_RECORD.getValue());
 
-        model.addAttribute("title", "Добавление записи");
         return "add-record";
     }
 
     @PostMapping("/addRecord")
-    public String newRecord(@RequestParam Long staffId,
+    public String newRecord(@RequestParam long staffId,
                             @RequestParam String date, @RequestParam String startHours,
                             @RequestParam String endHours, @RequestParam double workingRate) {
 
-        Record record = new Record(staffId, parseDate(date), startHours, endHours, workingRate);
-        recordRepository.save(record);
+        recordService.addRecord(staffId, date, startHours, endHours, workingRate);
 
         return "redirect:/";
     }
@@ -46,17 +42,9 @@ public class RecordController {
     @PostMapping("/record{id}/remove")
     public String recordDelete(@PathVariable(value = "id") long id) {
 
-        Record record = recordRepository.findById(id).orElseThrow();
-        recordRepository.delete(record);
+        recordService.deleteRecord(id);
 
         return "redirect:/";
     }
-    private String parseDate(String str) {
 
-        String year = str.substring(0, 4);
-        String month = str.substring(5, 7);
-        String day = str.substring(8);
-
-        return day + "." + month + "." + year;
-    }
 }

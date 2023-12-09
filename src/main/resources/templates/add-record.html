@@ -17,7 +17,7 @@
 <div class="container mt-3 forAll">
     <h1>Добавление записи</h1>
     <div>
-        <form action="/addRecord" method="post">
+        <form action="/addRecord" method="post" onsubmit="return checkTime()">
 
             <div class="col-sm-6">
                 <label for="staffId" class="form-label">Выберите сотрудника</label>
@@ -68,6 +68,21 @@
 
     function closeNav() {
         document.getElementById("mySidenav").style.width = "0";
+    }
+</script>
+
+<script type="text/javascript">
+    function checkTime() {
+        var time1 = document.getElementById("startHoursId").value;
+        var time2 = document.getElementById("endHoursId").value;
+
+        if (time1 >= time2) {
+            alert("Выберите время, большее, чем в первом поле!");
+            document.getElementById("endHoursId").value = "";
+            return false; // Запрещаем отправку формы
+        }
+
+        return true; // Разрешаем отправку формы
     }
 </script>
 

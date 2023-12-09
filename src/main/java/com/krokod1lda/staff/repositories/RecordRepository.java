@@ -1,4 +1,4 @@
-package com.krokod1lda.staff.repo;
+package com.krokod1lda.staff.repositories;
 
 import com.krokod1lda.staff.models.Record;
 import org.springframework.data.repository.CrudRepository;
