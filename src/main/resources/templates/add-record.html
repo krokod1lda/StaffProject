@@ -17,41 +17,45 @@
 <div class="container mt-3 forAll">
     <h1>Добавление записи</h1>
     <div>
-        <form action="/addRecord" method="post" onsubmit="return checkTime()">
+        <div class="col-sm-6">
+            <label for="staffId" class="form-label">Выберите сотрудника</label>
+            <select required name="staffId" class="form-control" id="staffId">
+                <option value="">Не выбран</option>
+                <div th:each="el : ${staffs}">
+                    <option th:value="${el.id}" th:text="${el.name}"></option>
+                </div>
+            </select>
+        </div>
 
-            <div class="col-sm-6">
-                <label for="staffId" class="form-label">Выберите сотрудника</label>
-                <select required name="staffId" class="form-control" id="staffId">
-                    <option value="">Не выбран</option>
-                    <div th:each="el : ${staffs}">
-                        <option th:value="${el.id}" th:text="${el.name} + ' ' + ${el.patronymic}"></option>
-                    </div>
-                </select>
-            </div>
+        <div class="col-sm-6">
+            <label for="dateId" class="form-label">Введите дату</label>
+            <input required type="date" name="date" class="form-control" id="dateId">
+        </div>
 
-            <div class="col-sm-6">
-                <label for="dateId" class="form-label">Введите дату</label>
-                <input required type="date" name="date" class="form-control" id="dateId">
-            </div>
+        <div class="col-sm-6">
+            <label for="startHoursId" class="form-label">Введите часы начала работы</label>
+            <input required type="time" name="startHours" class="form-control" id="startHoursId">
+        </div>
 
-            <div class="col-sm-6">
-                <label for="startHoursId" class="form-label">Введите часы начала работы</label>
-                <input required type="time" name="startHours" class="form-control" id="startHoursId">
-            </div>
+        <div class="col-sm-6">
+            <label for="endHoursId" class="form-label">Введите часы окончания работы</label>
+            <input required type="time" name="endHours" class="form-control" id="endHoursId">
+        </div>
 
-            <div class="col-sm-6">
-                <label for="endHoursId" class="form-label">Введите часы окончания работы</label>
-                <input required type="time" name="endHours" class="form-control" id="endHoursId">
-            </div>
+        <div class="col-sm-6">
+            <label for="workingRateId" class="form-label">Введите ставку (руб/ч)</label>
+            <input required type="number" name="workingRate" class="form-control" id="workingRateId">
+        </div>
 
-            <div class="col-sm-6">
-                <label for="workingRateId" class="form-label">Введите ставку (руб/ч)</label>
-                <input required type="number" name="workingRate" class="form-control" id="workingRateId">
-            </div>
+        <hr>
 
-            <hr>
-            <button type="submit" class="btn btn-light forButtons">Добавить запись</button>
-        </form>
+        <button class="w-100 py-2 mb-2 btn btn-outline-secondary rounded-3" type="submit" onclick="checkTime();">
+            Добавить запись
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+            </svg>
+        </button>
     </div>
 
 </div>
@@ -82,7 +86,31 @@
             return false; // Запрещаем отправку формы
         }
 
-        return true; // Разрешаем отправку формы
+        return addRecord(); // Разрешаем отправку формы
+    }
+
+    async function addRecord() {
+        let formData = new FormData();
+
+
+        const staffId = document.getElementById('staffId');
+        const date = document.getElementById('dateId');
+        const startHours = document.getElementById('startHoursId');
+        const endHours = document.getElementById('endHoursId');
+        const workingRate = document.getElementById('workingRateId');
+
+        formData.append('staffId', staffId.value);
+        formData.append('date', date.value);
+        formData.append('startHours', startHours.value);
+        formData.append('endHours', endHours.value);
+        formData.append('workingRate', workingRate.value);
+
+        await fetch('/addRecord', {
+            method: 'POST',
+            body: formData
+        })
+
+        window.location.replace('/');
     }
 </script>
 

@@ -32,7 +32,7 @@
             <tbody>
             <tr th:each="j : ${i}">
 
-                <td th:text="${staffById.get(j.staffId).surname + ' ' + staffById.get(j.staffId).name + ' ' + staffById.get(j.staffId).patronymic}"></td>
+                <td th:text="${staffById.get(j.staffId).surname + ' ' + staffById.get(j.staffId).name}"></td>
                 <td th:text="${j.startHours}"></td>
                 <td th:text="${j.endHours}"></td>
                 <td>Пока что нет</td>

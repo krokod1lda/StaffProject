@@ -28,10 +28,9 @@ public class StaffController {
         return "add-staff";
     }
     @PostMapping("/addStaff")
-    public String newStaff(@RequestParam String name, @RequestParam String surname,
-                           @RequestParam String patronymic) {
+    public String newStaff(@RequestParam String name, @RequestParam String surname) {
 
-        staffService.addStaff(name, surname, patronymic);
+        staffService.addStaff(name, surname);
 
         return "redirect:/";
     }

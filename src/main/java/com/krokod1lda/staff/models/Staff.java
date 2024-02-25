@@ -13,12 +13,10 @@ public class Staff {
     private Long id;
     private String name;
     private String surname;
-    private String patronymic;
 
-    public Staff(String name, String surname, String patronymic) {
+    public Staff(String name, String surname) {
         this.name = name;
         this.surname = surname;
-        this.patronymic = patronymic;
     }
     public Staff() {}
 
@@ -44,13 +42,5 @@ public class Staff {
 
     public void setSurname(String surname) {
         this.surname = surname;
-    }
-
-    public String getPatronymic() {
-        return patronymic;
-    }
-
-    public void setPatronymic(String patronymic) {
-        this.patronymic = patronymic;
     }
 }

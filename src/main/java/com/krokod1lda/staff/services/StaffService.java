@@ -16,9 +16,9 @@ public class StaffService {
     private StaffRepository staffRepository;
     @Autowired
     private RecordRepository recordRepository;
-    public void addStaff(String name, String surname, String patronymic) {
+    public void addStaff(String name, String surname) {
 
-        Staff staff = new Staff(name, surname, patronymic);
+        Staff staff = new Staff(name, surname);
         staffRepository.save(staff);
     }
 

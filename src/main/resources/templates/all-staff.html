@@ -14,15 +14,32 @@
 <!-- Шапка страницы -->
 <div th:insert="/blocks/sidebar :: sidebar"></div>
 
-<div class="container mt-3 forAll">
-    <h1>Все сотрудники</h1>
+<div class="container mt-3">
+    <h4 class="mb-3">Все сотрудники</h4>
 
-    <ul class="dropdown-menu position-static d-grid gap-1 rounded-3 mx-0 shadow" data-bs-theme="light">
-        <div th:each="el : ${staffs}">
-            <a class="dropdown-item rounded-2" th:staffHref="'staff' + ${el.id}" style="cursor: pointer" th:text="${el.name} + ' ' + ${el.patronymic} + ' ' + ${el.surname}"></a>
-            <hr class="dropdown-divider">
-        </div>
-    </ul>
+    <hr class="my-4">
+
+    <div class="table-responsive small mt-3">
+        <table class="table table-hover table-sm forTables">
+            <thead>
+            <tr>
+                <th scope="col">Имя</th>
+                <th scope="col">Фамилия</th>
+            </tr>
+            </thead>
+
+            <div th:each="el : ${staffs}">
+
+                <tbody>
+                <tr th:staffHref="'staff' + ${el.id}" style="cursor: pointer">
+                    <td th:text="${el.name}"/>
+                    <td th:text="${el.surname}"/>
+                </tr>
+                </tbody>
+            </div>
+        </table>
+    </div>
+
 </div>
 
 <!-- Футер страницы -->
@@ -41,7 +58,7 @@
 </script>
 
 <script>
-    const tableRows = document.querySelectorAll('a[staffHref]');
+    const tableRows = document.querySelectorAll('tr[staffHref]');
 
     tableRows.forEach(row => {
         row.addEventListener('click', () => {
