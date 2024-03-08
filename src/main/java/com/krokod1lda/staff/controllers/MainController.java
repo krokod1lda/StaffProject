@@ -1,3 +1,30 @@
+//package com.krokod1lda.staff.controllers;
+//
+//import com.krokod1lda.staff.models.Staff;
+//import com.krokod1lda.staff.repositories.StaffRepository;
+//import com.krokod1lda.staff.services.CalculatingService;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.web.bind.annotation.GetMapping;
+//import org.springframework.web.bind.annotation.RestController;
+//
+//@RestController
+//public class MainController {
+//
+//    @Autowired
+//    private CalculatingService calculatingService;
+//    @Autowired
+//    StaffRepository staffRepository;
+//    @GetMapping("/")
+//    public Iterable<Staff> home() {
+//
+//        return this.staffRepository.findAll();
+//    }
+//}
+
+
+//Код ниже как было ранее, с использоваием чистого html
+
+
 package com.krokod1lda.staff.controllers;
 
 import com.krokod1lda.staff.entityAttributes.MainAttributes;

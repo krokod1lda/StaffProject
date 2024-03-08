@@ -1,5 +1,6 @@
 package com.krokod1lda.staff.services;
 
+import com.krokod1lda.staff.RecordAndHoursWrapper;
 import com.krokod1lda.staff.models.Record;
 import com.krokod1lda.staff.models.Staff;
 import com.krokod1lda.staff.repositories.RecordRepository;
@@ -7,7 +8,8 @@ import com.krokod1lda.staff.repositories.StaffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class StaffService {
@@ -16,43 +18,77 @@ public class StaffService {
     private StaffRepository staffRepository;
     @Autowired
     private RecordRepository recordRepository;
+
+
     public void addStaff(String name, String surname) {
 
         Staff staff = new Staff(name, surname);
         staffRepository.save(staff);
     }
 
-    public ArrayList<Staff> getStaffById(long id) {
 
-        Optional<Staff> staff = staffRepository.findById(id);  // следующие 4 строки - передаем данные об одном сотруднике
-        ArrayList<Staff> res = new ArrayList<>();
-        staff.ifPresent(res::add);
+    public Staff getStaffById(long id) {
 
-        return res;
+        return staffRepository.findById(id).orElseThrow();
     }
+
     public Iterable<Staff> getAllStaff() {
 
         return staffRepository.findAll();
     }
 
-    public Map<Record, Float> getRecordsAndTime(long id) {
+
+    public List<RecordAndHoursWrapper> getRecordsAndTime(long id) {
+
 
         List<Record> records = recordRepository.findByStaffId(id); // записи данного сотрудника
-        List<Float> resultTime = new ArrayList<Float>();
+        List<RecordAndHoursWrapper> recordAndHoursWrappers = new ArrayList<>();
 
         for (Record record : records) {
-            float resTime = StrToFlGetTime(record.getStartHours(), record.getEndHours());
-            resultTime.add(resTime);
+            Float hours = StrToFlGetTime(record.getStartHours(), record.getEndHours());
+
+            recordAndHoursWrappers.add(new RecordAndHoursWrapper(record, hours));
         }
 
-        Map<Record, Float> recordsAndTime = new HashMap<>();
-
-        for (int i = 0; i < records.size(); i++) {
-            recordsAndTime.put(records.get(i), resultTime.get(i));
-        }
-
-        return recordsAndTime;
+        return recordAndHoursWrappers;
     }
+
+
+    public Wrap wrapTheList(Staff staff, List<RecordAndHoursWrapper> list) { // Обертывание списка объектов RecordAndHoursWrapper
+
+        return new Wrap(staff, list);
+    }
+
+
+    public static class Wrap { // Класс для обертывания списка объектов RecordAndHoursWrapper
+
+        private Staff staff;
+
+        private List<RecordAndHoursWrapper> list;
+
+        public List<RecordAndHoursWrapper> getList() {
+            return list;
+        }
+
+        public void setList(List<RecordAndHoursWrapper> list) {
+            this.list = list;
+        }
+
+        public Staff getStaff() {
+            return staff;
+        }
+
+        public void setStaff(Staff staff) {
+            this.staff = staff;
+        }
+
+        public Wrap(Staff staff, List<RecordAndHoursWrapper> list) {
+
+            this.staff = staff;
+            this.list = list;
+        }
+    }
+
 
     public void removeStaff(long id) {
 
@@ -62,6 +98,7 @@ public class StaffService {
         List<Record> records = recordRepository.findByStaffId(id);
         recordRepository.deleteAll(records);
     }
+
 
     public float StrToFlGetTime(String time1, String time2) { // функция возвращает количество часов
 

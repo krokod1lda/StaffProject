@@ -1,24 +1,21 @@
 package com.krokod1lda.staff.controllers;
 
-import com.krokod1lda.staff.entityAttributes.RecordAttributes;
 import com.krokod1lda.staff.entityAttributes.StaffAttributes;
-import com.krokod1lda.staff.repositories.StaffRepository;
 import com.krokod1lda.staff.services.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@CrossOrigin(origins = "http://localhost:3000/")
+@RestController
 public class StaffController {
 
-    @Autowired
-    private StaffRepository staffRepository;
+
     @Autowired
     private StaffService staffService;
+
 
     @GetMapping("/addStaff")
     public String addStaff(Model model) {
@@ -27,6 +24,7 @@ public class StaffController {
 
         return "add-staff";
     }
+
     @PostMapping("/addStaff")
     public String newStaff(@RequestParam String name, @RequestParam String surname) {
 
@@ -34,6 +32,7 @@ public class StaffController {
 
         return "redirect:/";
     }
+
     @GetMapping("/allStaff")
     public String allStaff(Model model) {
 
@@ -43,17 +42,11 @@ public class StaffController {
         return "all-staff";
     }
 
-    @GetMapping("/staff{id}")
-    public String viewStaff(@PathVariable(value = "id") long id, Model model) {
+    @GetMapping(value = "/staff{id}")
+    @ResponseBody
+    public ResponseEntity<StaffService.Wrap> viewStaff(@PathVariable(value = "id") long id) {
 
-        if(!staffRepository.existsById(id)) { // Переместить
-            return "redirect:/";
-        }
-
-        model.addAttribute(StaffAttributes.STAFF.getValue(), staffService.getStaffById(id));
-        model.addAttribute(RecordAttributes.RECORDS_AND_TIME.getValue(), staffService.getRecordsAndTime(id)); // передаем в шаблон Map с записями и соответствующим временем
-        model.addAttribute(StaffAttributes.TITLE.getValue(), StaffAttributes.STAFF_RUS.getValue());
-        return "staff-card";
+        return new ResponseEntity<>(staffService.wrapTheList(staffService.getStaffById(id), staffService.getRecordsAndTime(id)), HttpStatus.OK);
     }
 
     @PostMapping("/staff{id}/remove")
@@ -63,5 +56,4 @@ public class StaffController {
 
         return "redirect:/";
     }
-
 }

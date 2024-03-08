@@ -5,9 +5,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-import java.sql.Date;
-import java.sql.Time;
-
 @Entity
 public class Record {
 
@@ -28,7 +25,8 @@ public class Record {
         this.workingRate = workingRate;
     }
 
-    public Record() {}
+    public Record() {
+    }
 
     public Long getId() {
         return id;
