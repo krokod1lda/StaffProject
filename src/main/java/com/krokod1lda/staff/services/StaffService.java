@@ -32,9 +32,10 @@ public class StaffService {
         return staffRepository.findById(id).orElseThrow();
     }
 
-    public Iterable<Staff> getAllStaff() {
+    public AllStaffWrapper getAllStaff() {
+        Iterable<Staff> staffIterable = staffRepository.findAll();
 
-        return staffRepository.findAll();
+        return new AllStaffWrapper(staffIterable);
     }
 
 
@@ -54,13 +55,30 @@ public class StaffService {
     }
 
 
-    public Wrap wrapTheList(Staff staff, List<RecordAndHoursWrapper> list) { // Обертывание списка объектов RecordAndHoursWrapper
+    public StaffCardWrapper wrapTheList(Staff staff, List<RecordAndHoursWrapper> list) { // Обертывание списка объектов RecordAndHoursWrapper
 
-        return new Wrap(staff, list);
+        return new StaffCardWrapper(staff, list);
     }
 
+    public static class AllStaffWrapper {
+        private Iterable<Staff> staffList;
 
-    public static class Wrap { // Класс для обертывания списка объектов RecordAndHoursWrapper
+        public AllStaffWrapper(Iterable<Staff> staffList) {
+            this.staffList = staffList;
+        }
+
+        public AllStaffWrapper() {}
+
+        public Iterable<Staff> getStaffList() {
+            return staffList;
+        }
+
+        public void setStaffList(List<Staff> staffList) {
+            this.staffList = staffList;
+        }
+    }
+
+    public static class StaffCardWrapper { // Класс для обертывания списка объектов RecordAndHoursWrapper
 
         private Staff staff;
 
@@ -82,7 +100,7 @@ public class StaffService {
             this.staff = staff;
         }
 
-        public Wrap(Staff staff, List<RecordAndHoursWrapper> list) {
+        public StaffCardWrapper(Staff staff, List<RecordAndHoursWrapper> list) {
 
             this.staff = staff;
             this.list = list;
@@ -90,14 +108,14 @@ public class StaffService {
     }
 
 
-    public void removeStaff(long id) {
-
-        Staff staff = staffRepository.findById(id).orElseThrow();
-        staffRepository.delete(staff);
-
-        List<Record> records = recordRepository.findByStaffId(id);
-        recordRepository.deleteAll(records);
-    }
+//    public void removeStaff(long id) {
+//
+//        Staff staff = staffRepository.findById(id).orElseThrow();
+//        staffRepository.delete(staff);
+//
+//        List<Record> records = recordRepository.findByStaffId(id);
+//        recordRepository.deleteAll(records);
+//    }
 
 
     public float StrToFlGetTime(String time1, String time2) { // функция возвращает количество часов
