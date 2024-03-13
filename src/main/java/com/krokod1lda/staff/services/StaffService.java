@@ -26,6 +26,15 @@ public class StaffService {
         staffRepository.save(staff);
     }
 
+    public void editStaff(long id, String name, String surname) {
+
+        Staff staff = staffRepository.findById(id).orElseThrow();
+
+        staff.setName(name);
+        staff.setSurname(surname);
+
+        staffRepository.save(staff);
+    }
 
     public Staff getStaffById(long id) {
 
@@ -38,6 +47,15 @@ public class StaffService {
         return new AllStaffWrapper(staffIterable);
     }
 
+
+    public void removeStaff(long id) {
+
+        Staff staff = staffRepository.findById(id).orElseThrow();
+        staffRepository.delete(staff);
+
+        List<Record> records = recordRepository.findByStaffId(id);
+        recordRepository.deleteAll(records);
+    }
 
     public List<RecordAndHoursWrapper> getRecordsAndTime(long id) {
 
@@ -67,7 +85,8 @@ public class StaffService {
             this.staffList = staffList;
         }
 
-        public AllStaffWrapper() {}
+        public AllStaffWrapper() {
+        }
 
         public Iterable<Staff> getStaffList() {
             return staffList;
@@ -106,16 +125,6 @@ public class StaffService {
             this.list = list;
         }
     }
-
-
-//    public void removeStaff(long id) {
-//
-//        Staff staff = staffRepository.findById(id).orElseThrow();
-//        staffRepository.delete(staff);
-//
-//        List<Record> records = recordRepository.findByStaffId(id);
-//        recordRepository.deleteAll(records);
-//    }
 
 
     public float StrToFlGetTime(String time1, String time2) { // функция возвращает количество часов

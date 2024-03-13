@@ -16,13 +16,6 @@ public class StaffController {
     @Autowired
     private StaffService staffService;
 
-    @PostMapping(value = "/addStaff", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public String newStaff(@RequestBody Staff staff) {
-
-        staffService.addStaff(staff.getName(), staff.getSurname());
-
-        return "redirect:/";
-    }
 
     @GetMapping("/allStaff")
     @ResponseBody
@@ -31,6 +24,7 @@ public class StaffController {
         return new ResponseEntity<>(staffService.getAllStaff(), HttpStatus.OK);
     }
 
+
     @GetMapping(value = "/staff{id}")
     @ResponseBody
     public ResponseEntity<StaffService.StaffCardWrapper> viewStaff(@PathVariable(value = "id") long id) {
@@ -38,11 +32,33 @@ public class StaffController {
         return new ResponseEntity<>(staffService.wrapTheList(staffService.getStaffById(id), staffService.getRecordsAndTime(id)), HttpStatus.OK);
     }
 
-//    @PostMapping("/staff{id}/remove")
-//    public String staffDelete(@PathVariable(value = "id") long id) {
-//
-//        staffService.removeStaff(id);
-//
-//        return "redirect:/";
-//    }
+    @GetMapping(value = "/staff{id}/edit")
+    @ResponseBody
+    public ResponseEntity<Staff> getEditStaff(@PathVariable(value = "id") long id) {
+
+        return new ResponseEntity<>(staffService.getStaffById(id), HttpStatus.OK);
+    }
+
+
+    @PostMapping(value = "/addStaff", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void newStaff(@RequestBody Staff staff) {
+
+        staffService.addStaff(staff.getName(), staff.getSurname());
+        return;
+    }
+
+
+    @PostMapping(value = "/staff{id}/edit", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void editStaff(@RequestBody Staff staff) {
+
+        staffService.editStaff(staff.getId(), staff.getName(), staff.getSurname());
+        return;
+    }
+
+    @PostMapping(value = "/staff{id}/delete", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void deleteStaff(@RequestBody Staff staff) {
+
+        staffService.removeStaff(staff.getId());
+        return;
+    }
 }
