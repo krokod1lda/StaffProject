@@ -7,6 +7,7 @@ import com.krokod1lda.staff.repositories.StaffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.*;
 
 @Service
@@ -21,14 +22,14 @@ public class CalculatingService {
 
         Iterable<Record> records = recordRepository.findAll();
 
-        List<String> dates = new ArrayList<>(); // создали список с датами
+        List<Date> dates = new ArrayList<>(); // создали список с датами
         for (Record record : records) {
             dates.add(record.getDate());
         }
-        Set<String> datesSet = new LinkedHashSet<>(dates); // оставили уникальные даты
+        Set<Date> datesSet = new LinkedHashSet<>(dates); // оставили уникальные даты
 
         List<List> recordsByDatesList = new ArrayList<>();
-        for (String date : datesSet) {
+        for (Date date : datesSet) {
 
             List<Record> recordsByDate = recordRepository.findByDate(date);
             // ПОПРОБОВАТЬ СВЯЗАТЬ recordId и высчитанное время (юзать функцию нижнюю)

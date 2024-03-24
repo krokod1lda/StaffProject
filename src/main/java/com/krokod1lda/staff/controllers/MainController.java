@@ -44,9 +44,9 @@ public class MainController {
     @GetMapping("/")
     public String home(Model model) {
 
-        model.addAttribute(RecordAttributes.RECORDS_BY_DATES_LIST.getValue(), calculatingService.getRecordsByDatesList());
-        model.addAttribute(StaffAttributes.STAFF_BY_ID.getValue(), calculatingService.getStaffById()); // передали словарь с ключом - id, значением - объектом staff
-        model.addAttribute(MainAttributes.TITLE.getValue(), MainAttributes.MAIN_PAGE.getValue());
+//        model.addAttribute(RecordAttributes.RECORDS_BY_DATES_LIST.getValue(), calculatingService.getRecordsByDatesList());
+//        model.addAttribute(StaffAttributes.STAFF_BY_ID.getValue(), calculatingService.getStaffById()); // передали словарь с ключом - id, значением - объектом staff
+//        model.addAttribute(MainAttributes.TITLE.getValue(), MainAttributes.MAIN_PAGE.getValue());
         return "home";
     }
 }

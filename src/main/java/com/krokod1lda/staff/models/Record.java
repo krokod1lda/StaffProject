@@ -1,23 +1,23 @@
 package com.krokod1lda.staff.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.sql.Date;
 
 @Entity
 public class Record {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long staffId;
-    private String date; // MySQL извлекает и выводит величины DATE в формате 'YYYY-MM-DD'
+    @Column(columnDefinition = "DATE")
+    private Date date;
     private String startHours; // По умолчанию для хранения времени применяется формат "hh:mm:ss". Занимает 3 байта.
     private String endHours;
     private double workingRate;
 
-    public Record(Long staffId, String date, String startHours, String endHours, double workingRate) {
+    public Record(Long staffId, Date date, String startHours, String endHours, double workingRate) {
         this.staffId = staffId;
         this.date = date;
         this.startHours = startHours;
@@ -44,11 +44,11 @@ public class Record {
         this.staffId = staffId;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

@@ -1,8 +1,10 @@
 package com.krokod1lda.staff.services;
 
 import com.krokod1lda.staff.RecordAndHoursWrapper;
+import com.krokod1lda.staff.models.Additional;
 import com.krokod1lda.staff.models.Record;
 import com.krokod1lda.staff.models.Staff;
+import com.krokod1lda.staff.repositories.AdditionalRepository;
 import com.krokod1lda.staff.repositories.RecordRepository;
 import com.krokod1lda.staff.repositories.StaffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,8 @@ public class StaffService {
     private StaffRepository staffRepository;
     @Autowired
     private RecordRepository recordRepository;
+    @Autowired
+    private AdditionalRepository additionalRepository;
 
 
     public void addStaff(String name, String surname) {
@@ -55,6 +59,9 @@ public class StaffService {
 
         List<Record> records = recordRepository.findByStaffId(id);
         recordRepository.deleteAll(records);
+
+        List<Additional> additionals = additionalRepository.findByStaffId(id);
+        additionalRepository.deleteAll(additionals);
     }
 
     public List<RecordAndHoursWrapper> getRecordsAndTime(long id) {
