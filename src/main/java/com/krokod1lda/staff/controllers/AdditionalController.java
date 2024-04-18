@@ -1,12 +1,9 @@
 package com.krokod1lda.staff.controllers;
 
 import com.krokod1lda.staff.models.Additional;
-import com.krokod1lda.staff.models.Staff;
 import com.krokod1lda.staff.services.AdditionalService;
-import com.krokod1lda.staff.services.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -24,11 +21,12 @@ public class AdditionalController {
                 additional.getPrice(), additional.getDate(), additional.getDescription());
         return;
     }
+
     @GetMapping("/allAdditionals")
     @ResponseBody
     public AdditionalService.AllAdditionalsWrapper allAdditionals() {
 
-        return additionalService.getAllAdditionals();
+        return additionalService.getAllAdditionalsByDates();
     }
 
     @GetMapping(value = "/additional{id}/edit")

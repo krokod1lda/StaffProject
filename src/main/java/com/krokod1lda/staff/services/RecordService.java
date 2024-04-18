@@ -1,11 +1,17 @@
 package com.krokod1lda.staff.services;
 
 import com.krokod1lda.staff.models.Record;
+import com.krokod1lda.staff.models.Staff;
 import com.krokod1lda.staff.repositories.RecordRepository;
+import com.krokod1lda.staff.repositories.StaffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -13,26 +19,190 @@ public class RecordService {
 
     @Autowired
     RecordRepository recordRepository;
+    @Autowired
+    StaffRepository staffRepository;
 
     public void addRecord(long staffId, Date date, String startHours,
-                          String endHours, double workingRate) {
+                          String endHours, float workingRate) {
 
         Record record = new Record(staffId, date, startHours, endHours, workingRate);
         recordRepository.save(record);
     }
 
-    public void deleteRecord(long id) {
+    public RecordFullWithStaffName getRecordWithStaffNameById(long id) {
+
+        Record record = recordRepository.findById(id).orElseThrow();
+        Staff staff = staffRepository.findById(record.getStaffId()).orElseThrow();
+        return new RecordFullWithStaffName(record, staff.getName());
+    }
+
+    public Set<Date> getSetOfDates() {
+        List<Record> records = (List<Record>) recordRepository.findAll();
+
+        return records.stream().map(Record::getDate).collect(Collectors.toSet());
+    }
+
+    public AllRecordsWrapper getAllRecordsByDates() {
+        Set<Date> uniqueDates = getSetOfDates();
+        List<RecordWithStaffNameListAndDate> list = new ArrayList<>();
+
+        for (Date date : uniqueDates) {
+            List<Record> records = recordRepository.findByDate(date);
+
+            List<RecordAndStaffName> recordAndStaffNames = new ArrayList<>();
+            for (Record record : records) {
+                Staff staff = staffRepository.findById(record.getStaffId()).orElseThrow();
+                RecordAndStaffName recordAndStaffName = new RecordAndStaffName(record.getId(), record.getStartHours(),
+                        record.getEndHours(), record.getWorkingRate(), staff.getName());
+                recordAndStaffNames.add(recordAndStaffName);
+            }
+            RecordWithStaffNameListAndDate recordWithStaffNameListAndDate =
+                    new RecordWithStaffNameListAndDate(date, recordAndStaffNames);
+            list.add(recordWithStaffNameListAndDate);
+        }
+
+        return new AllRecordsWrapper(list);
+    }
+
+    public void removeRecord(long id) {
 
         Record record = recordRepository.findById(id).orElseThrow();
         recordRepository.delete(record);
     }
 
-//    private String parseDate(String str) { // Подлежит удалению (изменить тип на Date)
-//
-//        String year = str.substring(0, 4);
-//        String month = str.substring(5, 7);
-//        String day = str.substring(8);
-//
-//        return day + "." + month + "." + year;
-//    }
+    public static class RecordAndStaffName {
+        private Long id;
+        private String startHours;
+        private String endHours;
+        private float workingRate;
+        private String staffName;
+
+        public RecordAndStaffName(Long id, String startHours, String endHours, float workingRate, String staffName) {
+            this.id = id;
+            this.startHours = startHours;
+            this.endHours = endHours;
+            this.workingRate = workingRate;
+            this.staffName = staffName;
+        }
+
+        public RecordAndStaffName() {
+        }
+
+        public Long getId() {
+            return id;
+        }
+
+        public void setId(Long id) {
+            this.id = id;
+        }
+
+        public String getStartHours() {
+            return startHours;
+        }
+
+        public void setStartHours(String startHours) {
+            this.startHours = startHours;
+        }
+
+        public String getEndHours() {
+            return endHours;
+        }
+
+        public void setEndHours(String endHours) {
+            this.endHours = endHours;
+        }
+
+        public float getWorkingRate() {
+            return workingRate;
+        }
+
+        public void setWorkingRate(float workingRate) {
+            this.workingRate = workingRate;
+        }
+
+        public String getStaffName() {
+            return staffName;
+        }
+
+        public void setStaffName(String staffName) {
+            this.staffName = staffName;
+        }
+    }
+
+    public static class RecordWithStaffNameListAndDate {
+        private Date date;
+        private List<RecordAndStaffName> records;
+
+        public RecordWithStaffNameListAndDate(Date date, List<RecordAndStaffName> records) {
+            this.date = date;
+            this.records = records;
+        }
+
+        public RecordWithStaffNameListAndDate() {
+        }
+
+        public Date getDate() {
+            return date;
+        }
+
+        public void setDate(Date date) {
+            this.date = date;
+        }
+
+        public List<RecordAndStaffName> getRecords() {
+            return records;
+        }
+
+        public void setRecords(List<RecordAndStaffName> records) {
+            this.records = records;
+        }
+    }
+
+    public static class AllRecordsWrapper {
+        private List<RecordWithStaffNameListAndDate> list;
+
+        public AllRecordsWrapper(List<RecordWithStaffNameListAndDate> list) {
+            this.list = list;
+        }
+
+        public AllRecordsWrapper() {
+        }
+
+        public List<RecordWithStaffNameListAndDate> getList() {
+            return list;
+        }
+
+        public void setList(List<RecordWithStaffNameListAndDate> list) {
+            this.list = list;
+        }
+    }
+
+    public static class RecordFullWithStaffName {
+        private Record record;
+        private String staffName;
+
+        public RecordFullWithStaffName(Record record, String staffName) {
+            this.record = record;
+            this.staffName = staffName;
+        }
+
+        public RecordFullWithStaffName() {
+        }
+
+        public Record getRecord() {
+            return record;
+        }
+
+        public void setRecord(Record record) {
+            this.record = record;
+        }
+
+        public String getStaffName() {
+            return staffName;
+        }
+
+        public void setStaffName(String staffName) {
+            this.staffName = staffName;
+        }
+    }
 }

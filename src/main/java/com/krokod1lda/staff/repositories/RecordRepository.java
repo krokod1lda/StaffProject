@@ -9,4 +9,5 @@ import java.util.List;
 public interface RecordRepository extends CrudRepository<Record, Long> {
     List<Record> findByStaffId(Long staff_id);
     List<Record> findByDate(Date date);
+    List<Record> findByStaffIdAndDate(Long staffId, Date date);
 }

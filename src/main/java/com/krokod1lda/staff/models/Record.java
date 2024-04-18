@@ -1,7 +1,6 @@
 package com.krokod1lda.staff.models;
 
 import jakarta.persistence.*;
-
 import java.sql.Date;
 
 @Entity
@@ -15,9 +14,9 @@ public class Record {
     private Date date;
     private String startHours; // По умолчанию для хранения времени применяется формат "hh:mm:ss". Занимает 3 байта.
     private String endHours;
-    private double workingRate;
+    private float workingRate;
 
-    public Record(Long staffId, Date date, String startHours, String endHours, double workingRate) {
+    public Record(Long staffId, Date date, String startHours, String endHours, float workingRate) {
         this.staffId = staffId;
         this.date = date;
         this.startHours = startHours;
@@ -68,11 +67,11 @@ public class Record {
         this.endHours = endHours;
     }
 
-    public double getWorkingRate() {
+    public float getWorkingRate() {
         return workingRate;
     }
 
-    public void setWorkingRate(double workingRate) {
+    public void setWorkingRate(float workingRate) {
         this.workingRate = workingRate;
     }
 }

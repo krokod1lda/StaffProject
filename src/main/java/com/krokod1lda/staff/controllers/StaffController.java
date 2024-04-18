@@ -1,6 +1,7 @@
 package com.krokod1lda.staff.controllers;
 
 import com.krokod1lda.staff.models.Staff;
+import com.krokod1lda.staff.services.StaffCardTableWrapper;
 import com.krokod1lda.staff.services.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +16,8 @@ public class StaffController {
 
     @Autowired
     private StaffService staffService;
-
+    @Autowired
+    private StaffCardTableWrapper staffCardTableWrapper;
 
     @GetMapping("/allStaff")
     @ResponseBody
@@ -24,12 +26,11 @@ public class StaffController {
         return new ResponseEntity<>(staffService.getAllStaff(), HttpStatus.OK);
     }
 
-
     @GetMapping(value = "/staff{id}")
     @ResponseBody
-    public ResponseEntity<StaffService.StaffCardWrapper> viewStaff(@PathVariable(value = "id") long id) {
+    public ResponseEntity<StaffCardTableWrapper.AllObjectsWrapper> viewStaff(@PathVariable(value = "id") long id) {
 
-        return new ResponseEntity<>(staffService.wrapTheList(staffService.getStaffById(id), staffService.getRecordsAndTime(id)), HttpStatus.OK);
+        return new ResponseEntity<>(staffCardTableWrapper.getStaffCardDataById(id), HttpStatus.OK);
     }
 
     @GetMapping(value = "/staff{id}/edit")
@@ -46,7 +47,6 @@ public class StaffController {
         staffService.addStaff(staff.getName(), staff.getSurname());
         return;
     }
-
 
     @PostMapping(value = "/staff{id}/edit", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void editStaff(@RequestBody Staff staff) {

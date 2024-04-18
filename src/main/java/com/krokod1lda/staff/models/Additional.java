@@ -1,7 +1,6 @@
 package com.krokod1lda.staff.models;
 
 import jakarta.persistence.*;
-
 import java.sql.Date;
 
 @Entity

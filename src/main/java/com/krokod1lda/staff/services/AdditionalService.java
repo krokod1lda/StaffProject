@@ -40,7 +40,7 @@ public class AdditionalService {
         return new AdditionalFullWithStaffName(additional, staff.getName());
     }
 
-    public AllAdditionalsWrapper getAllAdditionals() { // Разобрать на методы
+    public AllAdditionalsWrapper getAllAdditionalsByDates() {
         Set<Date> uniqueDates = getSetOfDates();
         List<AdditionalWithStaffNameListAndDate> list = new ArrayList<>();
 
