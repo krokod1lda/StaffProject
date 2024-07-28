@@ -1,5 +1,6 @@
 package com.krokod1lda.staff.services;
 
+import com.krokod1lda.staff.exceptions.ResourceNotFoundException;
 import com.krokod1lda.staff.models.Additional;
 import com.krokod1lda.staff.models.Record;
 import com.krokod1lda.staff.models.Staff;
@@ -40,7 +41,7 @@ public class StaffService {
 
     public Staff getStaffById(long id) {
 
-        return staffRepository.findById(id).orElseThrow();
+        return staffRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("my god, not found staff with ID " + id));
     }
 
     public AllStaffWrapper getAllStaff() {

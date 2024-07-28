@@ -1,5 +1,6 @@
 package com.krokod1lda.staff.services;
 
+import com.krokod1lda.staff.exceptions.ResourceNotFoundException;
 import com.krokod1lda.staff.models.Additional;
 import com.krokod1lda.staff.models.Record;
 import com.krokod1lda.staff.models.Staff;
@@ -73,7 +74,7 @@ public class StaffCardTableWrapper {
 
     public AllObjectsWrapper getStaffCardDataById(long staffId) {
 
-        Staff staff = staffRepository.findById(staffId).orElseThrow();
+        Staff staff = staffRepository.findById(staffId).orElseThrow(() -> new ResourceNotFoundException("oh no, not found staff with ID " + staffId));
 
         List<AllFieldsForOneObjectWrapper> list = new ArrayList<>();
         List<Date> uniqueDates = getUniqueDatesOfRecordsAndAdditionals(staffId);

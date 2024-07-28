@@ -1,5 +1,6 @@
 package com.krokod1lda.staff.services;
 
+import com.krokod1lda.staff.exceptions.ResourceNotFoundException;
 import com.krokod1lda.staff.models.Record;
 import com.krokod1lda.staff.models.Staff;
 import com.krokod1lda.staff.repositories.RecordRepository;
@@ -31,7 +32,7 @@ public class RecordService {
 
     public RecordFullWithStaffName getRecordWithStaffNameById(long id) {
 
-        Record record = recordRepository.findById(id).orElseThrow();
+        Record record = recordRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("oh god, record with id " + id + " not found"));
         Staff staff = staffRepository.findById(record.getStaffId()).orElseThrow();
         return new RecordFullWithStaffName(record, staff.getName());
     }
