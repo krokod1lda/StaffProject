@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,10 +27,11 @@ public class AdditionalService {
         additionalRepository.save(additional);
     }
 
-    public Set<Date> getSetOfDates() {
+    public List<Date> getSetOfDates() {
         List<Additional> additionals = (List<Additional>) additionalRepository.findAll();
 
-        return additionals.stream().map(Additional::getDate).collect(Collectors.toSet());
+        return additionals.stream().map(Additional::getDate).sorted(Comparator.reverseOrder())
+                .distinct().collect(Collectors.toList());
     }
 
     public AdditionalFullWithStaffName getAdditionalWIthStaffNameById(long id) {
@@ -40,19 +41,24 @@ public class AdditionalService {
         return new AdditionalFullWithStaffName(additional, staff.getName());
     }
 
+    public void addAdditionalToAdditionalAndStaffNamesList(List<AdditionalAndStaffName> additionalAndStaffNames, Additional additional) {
+
+        Staff staff = staffRepository.findById(additional.getStaffId()).orElseThrow();
+        AdditionalAndStaffName additionalAndStaffName = new AdditionalAndStaffName(additional.getId(), additional.getType(),
+                additional.getPrice(), staff.getName());
+        additionalAndStaffNames.add(additionalAndStaffName);
+    }
+
     public AllAdditionalsWrapper getAllAdditionalsByDates() {
-        Set<Date> uniqueDates = getSetOfDates();
+        List<Date> uniqueDates = getSetOfDates();
         List<AdditionalWithStaffNameListAndDate> list = new ArrayList<>();
 
         for (Date date : uniqueDates) {
             List<Additional> additionals = additionalRepository.findByDate(date);
-
             List<AdditionalAndStaffName> additionalAndStaffNames = new ArrayList<>();
+
             for (Additional additional : additionals) {
-                Staff staff = staffRepository.findById(additional.getStaffId()).orElseThrow();
-                AdditionalAndStaffName additionalAndStaffName = new AdditionalAndStaffName(additional.getId(), additional.getType(),
-                        additional.getPrice(), staff.getName());
-                additionalAndStaffNames.add(additionalAndStaffName);
+                addAdditionalToAdditionalAndStaffNamesList(additionalAndStaffNames, additional);
             }
             AdditionalWithStaffNameListAndDate additionalWithStaffNameListAndDate =
                     new AdditionalWithStaffNameListAndDate(date, additionalAndStaffNames);
@@ -70,12 +76,12 @@ public class AdditionalService {
 
 
     public static class AdditionalAndStaffName {
-        private Long id;
+        private long id;
         private String type;
         private int price;
         private String staffName;
 
-        public AdditionalAndStaffName(Long id, String type, int price, String staffName) {
+        public AdditionalAndStaffName(long id, String type, int price, String staffName) {
             this.id = id;
             this.type = type;
             this.price = price;
@@ -85,11 +91,11 @@ public class AdditionalService {
         public AdditionalAndStaffName() {
         }
 
-        public Long getId() {
+        public long getId() {
             return id;
         }
 
-        public void setId(Long id) {
+        public void setId(long id) {
             this.id = id;
         }
 

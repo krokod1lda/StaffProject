@@ -8,8 +8,8 @@ public class Additional {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private Long staffId;
+    private long id;
+    private long staffId;
     private String type;
     private int price;
     @Column(columnDefinition = "DATE")
@@ -17,7 +17,7 @@ public class Additional {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    public Additional(Long staffId, String type, int price, Date date, String description) {
+    public Additional(long staffId, String type, int price, Date date, String description) {
         this.staffId = staffId;
         this.type = type;
         this.price = price;
@@ -28,19 +28,19 @@ public class Additional {
     public Additional() {
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public Long getStaffId() {
+    public long getStaffId() {
         return staffId;
     }
 
-    public void setStaffId(Long staffId) {
+    public void setStaffId(long staffId) {
         this.staffId = staffId;
     }
 

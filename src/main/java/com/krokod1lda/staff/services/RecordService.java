@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -36,32 +36,43 @@ public class RecordService {
         return new RecordFullWithStaffName(record, staff.getName());
     }
 
-    public Set<Date> getSetOfDates() {
+    public List<Date> getSetOfDates() {
         List<Record> records = (List<Record>) recordRepository.findAll();
 
-        return records.stream().map(Record::getDate).collect(Collectors.toSet());
+        return records.stream()
+                .map(Record::getDate)
+                .sorted(Comparator.reverseOrder())
+                .distinct()
+                .collect(Collectors.toList());
     }
 
     public AllRecordsWrapper getAllRecordsByDates() {
-        Set<Date> uniqueDates = getSetOfDates();
+        List<Date> uniqueDates = getSetOfDates();
         List<RecordWithStaffNameListAndDate> list = new ArrayList<>();
 
         for (Date date : uniqueDates) {
             List<Record> records = recordRepository.findByDate(date);
-
             List<RecordAndStaffName> recordAndStaffNames = new ArrayList<>();
+
             for (Record record : records) {
-                Staff staff = staffRepository.findById(record.getStaffId()).orElseThrow();
-                RecordAndStaffName recordAndStaffName = new RecordAndStaffName(record.getId(), record.getStartHours(),
-                        record.getEndHours(), record.getWorkingRate(), staff.getName());
-                recordAndStaffNames.add(recordAndStaffName);
+                addRecordToRecordAndStaffNamesList(recordAndStaffNames, record);
             }
+
             RecordWithStaffNameListAndDate recordWithStaffNameListAndDate =
                     new RecordWithStaffNameListAndDate(date, recordAndStaffNames);
             list.add(recordWithStaffNameListAndDate);
         }
 
         return new AllRecordsWrapper(list);
+    }
+
+    public void addRecordToRecordAndStaffNamesList(List<RecordAndStaffName> recordAndStaffNames, Record record) {
+
+        Staff staff = staffRepository.findById(record.getStaffId()).orElseThrow();
+        RecordAndStaffName recordAndStaffName = new RecordAndStaffName(record.getId(), record.getStartHours(),
+                record.getEndHours(), record.getWorkingRate(), staff.getName());
+        recordAndStaffNames.add(recordAndStaffName);
+
     }
 
     public void removeRecord(long id) {
@@ -71,13 +82,13 @@ public class RecordService {
     }
 
     public static class RecordAndStaffName {
-        private Long id;
+        private long id;
         private String startHours;
         private String endHours;
         private float workingRate;
         private String staffName;
 
-        public RecordAndStaffName(Long id, String startHours, String endHours, float workingRate, String staffName) {
+        public RecordAndStaffName(long id, String startHours, String endHours, float workingRate, String staffName) {
             this.id = id;
             this.startHours = startHours;
             this.endHours = endHours;
@@ -88,11 +99,11 @@ public class RecordService {
         public RecordAndStaffName() {
         }
 
-        public Long getId() {
+        public long getId() {
             return id;
         }
 
-        public void setId(Long id) {
+        public void setId(long id) {
             this.id = id;
         }
 

@@ -8,15 +8,15 @@ public class Record {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private Long staffId;
+    private long id;
+    private long staffId;
     @Column(columnDefinition = "DATE")
     private Date date;
     private String startHours; // По умолчанию для хранения времени применяется формат "hh:mm:ss". Занимает 3 байта.
     private String endHours;
     private float workingRate;
 
-    public Record(Long staffId, Date date, String startHours, String endHours, float workingRate) {
+    public Record(long staffId, Date date, String startHours, String endHours, float workingRate) {
         this.staffId = staffId;
         this.date = date;
         this.startHours = startHours;
@@ -27,19 +27,19 @@ public class Record {
     public Record() {
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public Long getStaffId() {
+    public long getStaffId() {
         return staffId;
     }
 
-    public void setStaffId(Long staffId) {
+    public void setStaffId(long staffId) {
         this.staffId = staffId;
     }
 

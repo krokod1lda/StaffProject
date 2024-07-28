@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -29,14 +29,14 @@ public class StaffCardTableWrapper {
     StaffRepository staffRepository;
 
 
-    public Set<Date> getUniqueDatesOfRecordsAndAdditionals(long id) {
+    public List<Date> getUniqueDatesOfRecordsAndAdditionals(long id) {
         List<Additional> additionalList = (List<Additional>) additionalRepository.findByStaffId(id);
         List<Record> recordList = (List<Record>) recordRepository.findByStaffId(id);
 
         return Stream.concat(
                         additionalList.stream().map(Additional::getDate),
                         recordList.stream().map(Record::getDate))
-                .collect(Collectors.toSet());
+                .sorted(Comparator.reverseOrder()).distinct().collect(Collectors.toList());
     }
 
     public float StrToFlGetTime(String time1, String time2) {
@@ -76,7 +76,7 @@ public class StaffCardTableWrapper {
         Staff staff = staffRepository.findById(staffId).orElseThrow();
 
         List<AllFieldsForOneObjectWrapper> list = new ArrayList<>();
-        Set<Date> uniqueDates = getUniqueDatesOfRecordsAndAdditionals(staffId);
+        List<Date> uniqueDates = getUniqueDatesOfRecordsAndAdditionals(staffId);
         for (Date date : uniqueDates) {
 
             float result = 0;
