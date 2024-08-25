@@ -1,9 +1,16 @@
 package com.krokod1lda.staff.models;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.sql.Date;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class Additional {
 
     @Id
@@ -23,56 +30,5 @@ public class Additional {
         this.price = price;
         this.date = date;
         this.description = description;
-    }
-
-    public Additional() {
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public long getStaffId() {
-        return staffId;
-    }
-
-    public void setStaffId(long staffId) {
-        this.staffId = staffId;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 }

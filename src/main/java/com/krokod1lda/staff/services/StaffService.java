@@ -7,6 +7,7 @@ import com.krokod1lda.staff.models.Staff;
 import com.krokod1lda.staff.repositories.AdditionalRepository;
 import com.krokod1lda.staff.repositories.RecordRepository;
 import com.krokod1lda.staff.repositories.StaffRepository;
+import com.krokod1lda.staff.wrappers.staffWrappers.AllStaffWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -61,24 +62,5 @@ public class StaffService {
 
         List<Additional> additionals = additionalRepository.findByStaffId(id);
         additionalRepository.deleteAll(additionals);
-    }
-
-    public static class AllStaffWrapper {
-        private Iterable<Staff> staffList;
-
-        public AllStaffWrapper(Iterable<Staff> staffList) {
-            this.staffList = staffList;
-        }
-
-        public AllStaffWrapper() {
-        }
-
-        public Iterable<Staff> getStaffList() {
-            return staffList;
-        }
-
-        public void setStaffList(List<Staff> staffList) {
-            this.staffList = staffList;
-        }
     }
 }

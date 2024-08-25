@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface AdditionalRepository extends CrudRepository<Additional, Long> {
     List<Additional> findByDate(Date date);
+
     List<Additional> findByStaffId(long staffId);
+
     List<Additional> findByStaffIdAndDate(long staffId, Date date);
 }
