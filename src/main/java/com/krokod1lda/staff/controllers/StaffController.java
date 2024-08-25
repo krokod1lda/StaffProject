@@ -1,10 +1,12 @@
 package com.krokod1lda.staff.controllers;
 
+import com.krokod1lda.staff.dto.StaffRequestDto;
 import com.krokod1lda.staff.models.Staff;
 import com.krokod1lda.staff.services.StaffCardViewService;
 import com.krokod1lda.staff.services.StaffService;
 import com.krokod1lda.staff.wrappers.staffWrappers.AllStaffWrapper;
 import com.krokod1lda.staff.wrappers.staffWrappers.StaffCardWrapper;
+import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -49,23 +51,23 @@ public class StaffController {
 
 
     @PostMapping(value = "/addStaff", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void newStaff(@RequestBody Staff staff) {
+    public void newStaff(@Valid @RequestBody StaffRequestDto staff) {
 
         log.info("Инициирован процесс добавления нового сотредника");
         staffService.addStaff(staff.getName(), staff.getSurname());
     }
 
     @PostMapping(value = "/staff{id}/edit", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void editStaff(@RequestBody Staff staff) {
+    public void editStaff(@PathVariable(value = "id") long id, @Valid @RequestBody StaffRequestDto staff) {
 
-        log.info("Инициирован процесс редактирования информации о сотруднике");
-        staffService.editStaff(staff.getId(), staff.getName(), staff.getSurname());
+        log.info("Инициирован процесс редактирования информации о сотруднике, ID: {}", id);
+        staffService.editStaff(id, staff.getName(), staff.getSurname());
     }
 
-    @PostMapping(value = "/staff{id}/delete", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void deleteStaff(@RequestBody Staff staff) {
+    @PostMapping(value = "/staff{id}/delete")
+    public void deleteStaff(@PathVariable(value = "id") long id) {
 
-        log.info("Инициирован процесс удаления сотрудника");
-        staffService.removeStaff(staff.getId());
+        log.info("Инициирован процесс удаления сотрудника, ID: {}", id);
+        staffService.removeStaff(id);
     }
 }

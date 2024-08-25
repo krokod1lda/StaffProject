@@ -1,9 +1,10 @@
 package com.krokod1lda.staff.controllers;
 
-import com.krokod1lda.staff.models.Record;
+import com.krokod1lda.staff.dto.RecordRequestDto;
 import com.krokod1lda.staff.services.RecordService;
 import com.krokod1lda.staff.wrappers.recordWrappers.AllRecordsWrapper;
 import com.krokod1lda.staff.wrappers.recordWrappers.RecordFullWithStaffNameWrapper;
+import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -18,7 +19,7 @@ public class RecordController {
     private RecordService recordService;
 
     @PostMapping(value = "/addRecord", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void newRecord(@RequestBody Record record) {
+    public void newRecord(@Valid @RequestBody RecordRequestDto record) {
 
         log.info("Инициирован процесс добавления новой записи");
         recordService.addRecord(record.getStaffId(), record.getDate(), record.getStartHours(), record.getEndHours(), record.getWorkingRate());
@@ -40,11 +41,10 @@ public class RecordController {
         return recordService.getRecordWithStaffNameById(id);
     }
 
+    @PostMapping(value = "/record{id}/delete")
+    public void deleteRecord(@PathVariable(value = "id") long id) {
 
-    @PostMapping(value = "/record{id}/delete", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void deleteRecord(@RequestBody Record record) {
-
-        log.info("Инициирован процесс удаления записи");
-        recordService.removeRecord(record.getId());
+        log.info("Инициирован процесс удаления записи, ID записи: {}", id);
+        recordService.removeRecord(id);
     }
 }
